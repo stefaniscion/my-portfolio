@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    h1{
+        @apply text-3xl font-extrabold text-slate-100 pb-4;
+    }
+    h2{
+        @apply text-3xl font-extrabold text-slate-100 pb-4;
+    }
+    h3{
+        @apply text-2xl font-extrabold text-slate-100 pb-4;
+    }
+    p{
+        @apply pb-1;
+    }
+}
