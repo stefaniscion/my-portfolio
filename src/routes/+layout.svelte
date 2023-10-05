@@ -1,5 +1,5 @@
 <script>
     import "../app.css";
-  </script>
-  
-  <slot />
+    import "devicon/devicon.min.css";
+</script>
+<slot/>
