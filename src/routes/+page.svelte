@@ -2,6 +2,7 @@
     // auto
     import Skill from "$lib/skill.svelte";
     import { onMount } from 'svelte';
+    import Egg from "$lib/easter_egg.svelte";
     let load_time: number = 0;
     let experience_years: number = new Date().getFullYear() - 2017;
     let production_hours: number = Math.ceil(((new Date() - new Date('1/1/2017'))/ (1000 * 60 * 60 * 24)) * 5.7 / 1000);
@@ -163,7 +164,7 @@
     <div class="container mx-auto px-4 grid-cols-2">
         <div class="flex mb-5 flex-wrap">
             <div class="grow"><h2 class="text-5xl mb-5 font-semibold">Questo <span class="text-amber-600">portfolio</span> è scritto con</h2></div>
-            <div class="flex">
+            <div class="flex text-neutral-400">
                 <div><i class="devicon-svelte-plain text-7xl"></i></div>
                 <div><i class="devicon-tailwindcss-plain text-7xl"></i></div>
                 <div><i class="devicon-linux-plain text-7xl"></i></div>
@@ -227,11 +228,13 @@
     <div class="container mx-auto px-4 grid-cols-2">
         <div class="flex">
             <div class="grow"><h2 class="text-5xl font-semibold">Questo portfolio è su <a target="_blank" class="text-amber-600 underline hover:text-neutral-100 transition duration-300" href="https://github.com/stefaniscion/my-portfolio">GitHub</a>!</h2></div>
-            <div><i class="devicon-github-original text-7xl"></div>
+            <div><a class="text-amber-600 hover:text-neutral-100 transition duration-300" target="_blank" href="https://github.com/Stefaniscion"><i class="devicon-github-plain text-7xl"></i></a></div>
         </div>
         <p>Sono un grande fan della community Open Source! Puoi dare un'occhiata ai sorgenti del mio portfolio o di altri miei progetti se vuoi!</p>
     </div>
 </section>
+
+<Egg/>
 
 <!-- Form -->
 <!-- <section class="bg-amber-600 text-neutral-100 py-20 font-mona-sans">
