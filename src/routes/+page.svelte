@@ -84,14 +84,14 @@
     <div class="container mx-auto px-4 text-center">
         <h2 class="text-5xl mb-5 font-semibold">Le mie <span class="text-amber-600">main skills</span></h2>
         <div class="flex flex-row flex-wrap mb-5">
-            <Skill name="Python" level="100" icon="devicon-python-plain" basis="basis-full lg:basis-1/3"/>
-            <Skill name="Linux" level="90" icon="devicon-linux-plain" basis="basis-full lg:basis-1/3"/>
-            <Skill name="PHP" level="90" icon="devicon-php-plain" basis="basis-full lg:basis-1/3"/>
-            <Skill name="Docker" level="80" icon="devicon-docker-plain" basis="basis-full lg:basis-1/5"/>
-            <Skill name="Javascript" level="80" icon="devicon-javascript-plain" basis="basis-full lg:basis-1/5"/>
-            <Skill name="TypeScript" level="70" icon="devicon-typescript-plain" basis="basis-full lg:basis-1/5"/>
-            <Skill name="C++" level="40" icon="devicon-cplusplus-plain" basis="basis-full lg:basis-1/5"/>
-            <Skill name="Rust" level="40" icon="devicon-rust-plain" basis="basis-full lg:basis-1/5"/>
+            <Skill name="Python" level={100} icon="devicon-python-plain" basis="basis-full lg:basis-1/3"/>
+            <Skill name="Linux" level={90} icon="devicon-linux-plain" basis="basis-full lg:basis-1/3"/>
+            <Skill name="PHP" level={90} icon="devicon-php-plain" basis="basis-full lg:basis-1/3"/>
+            <Skill name="Docker" level={80} icon="devicon-docker-plain" basis="basis-full lg:basis-1/5"/>
+            <Skill name="Javascript" level={80} icon="devicon-javascript-plain" basis="basis-full lg:basis-1/5"/>
+            <Skill name="TypeScript" level={70} icon="devicon-typescript-plain" basis="basis-full lg:basis-1/5"/>
+            <Skill name="C++" level={40} icon="devicon-cplusplus-plain" basis="basis-full lg:basis-1/5"/>
+            <Skill name="Rust" level={40} icon="devicon-rust-plain" basis="basis-full lg:basis-1/5"/>
         </div>
         <p>
             (Ma mi intendo anche di: 
