@@ -1,6 +1,6 @@
 <!-- Skills -->
 <script lang="ts">
-    import CardSkill from '$lib/card/CardSkill.svelte';
+    import CardSkill from '../card/CardSkill.svelte';
 </script>
 <section class="bg-neutral-950 text-neutral-100 py-20 font-mona-sans">
     <div class="container mx-auto px-4 text-center">

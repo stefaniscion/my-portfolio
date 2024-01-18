@@ -1,0 +1,38 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import SectionHeader from '../components/section/SectionHeader.svelte';
+import SectionCounters from '../components/section/SectionCounters.svelte';
+import SectionOccupation from '../components/section/SectionOccupation.svelte';
+import SectionSkills from '../components/section/SectionSkills.svelte';
+import SectionContactBanner from '../components/section/SectionContactBanner.svelte';
+import SectionPartners from '../components/section/SectionPartners.svelte';
+import SectionAbout from '../components/section/SectionAbout.svelte';
+import SectionPortfolioInfo from '../components/section/SectionPortfolioInfo.svelte';
+import SectionProjects from '../components/section/SectionProjects.svelte';
+import SectionGithub from '../components/section/SectionGithub.svelte';
+import ScriptEgg from '../components/script/ScriptEgg.svelte';
+---
+<html lang="it">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<SiteLayout>
+			<SectionHeader/>
+			<SectionCounters/>
+			<SectionOccupation/>
+			<SectionSkills/>
+			<SectionContactBanner/>
+			<SectionPartners/>
+			<SectionAbout/>
+			<SectionPortfolioInfo/>
+			<SectionProjects/>
+			<SectionGithub/>
+			<ScriptEgg/>
+		</SiteLayout>
+	</body>
+</html>
