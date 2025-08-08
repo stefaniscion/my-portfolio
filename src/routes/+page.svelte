@@ -10,6 +10,7 @@
     import SectionPortfolioInfo from '$lib/section/SectionPortfolioInfo.svelte';
     import SectionProjects from '$lib/section/SectionProjects.svelte';
     import SectionGithub from '$lib/section/SectionGithub.svelte';
+    import SectionKonami from '$lib/section/SectionKonami.svelte';
     import ScriptEgg from '$lib/script/ScriptEgg.svelte';
 </script>
 
@@ -23,4 +24,5 @@
 <SectionPortfolioInfo/>
 <SectionProjects/>
 <SectionGithub/>
+<SectionKonami/>
 <ScriptEgg/>

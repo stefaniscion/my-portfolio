@@ -1,142 +1,181 @@
 <script>
-import { onMount } from 'svelte';
+  import { onMount } from 'svelte';
 
-onMount(() => {
-function Egg(/* keySequence, fn, metadata */) {
-  this.eggs = [];
-  this.hooks = [];
-  this.kps = [];
-  this.activeEgg = '';
-  // for now we'll just ignore the shift key to allow capital letters
-  this.ignoredKeys = [16];
+  let activatedOnce = false;
 
-  if(arguments.length) {
-    this.AddCode.apply(this, arguments);
-  }
-}
+  // Activate the 1998 mode
+  function activate1998Mode() {
+        // Prevent multiple activations
+    if (activatedOnce) return;
+    activatedOnce = true;
 
-// attempt to call passed function bound to Egg object instance
-Egg.prototype.__execute = function(fn) {
-  return typeof fn === 'function' && fn.call(this);
-}
-
-// converts literal character values to keyCodes
-Egg.prototype.__toCharCodes = function(keys) {
-  var special = {
-      "slash": 191, "up": 38, "down": 40, "left": 37, "right": 39, "enter": 13, "space": 32, "ctrl": 17, "alt": 18, "tab": 9, "esc": 27
-    },
-    specialKeys = Object.keys(special);
-
-  if(typeof keys === 'string') {
-    // make sure there isn't any whitespace
-    keys = keys.split(',').map(function(key){
-      return key.trim();
-    });
+    alert("Benvenuto nel futuro™... Benvenuto nel 1998!");
+    document.body.classList.add("mode-1998");
+    inject1998Styles();
+    insert1998Banner();
   }
 
-  var characterKeyCodes = keys.map(function(key) {
-    // check if it's already a keycode
-    if(key === parseInt(key, 10)) {
-      return key;
+  // Inject styles for the 1998 mode
+  function inject1998Styles() {
+    if (document.getElementById("style-1998")) return;
+
+    const style = document.createElement("style");
+    style.id = "style-1998";
+    style.textContent = `
+      body.mode-1998 {
+        cursor: url("img/egg/cursor.cur"), auto !important;
+      }
+
+      body.mode-1998 * {
+        font-family: "Comic Sans MS", cursive !important;
+        color: yellow;
+        animation: rainbowText 1s infinite !important;
+      }
+
+      body.mode-1998 .devicon,
+      body.mode-1998 [class*="devicon-"] {
+        font-family: "devicon" !important;
+      }
+
+      body.mode-1998 section {
+        background: url("img/egg/stars-background.gif") repeat !important;
+        border-bottom: 2px dashed magenta;
+      }
+
+      body.mode-1998 a {
+        color: cyan !important;
+        text-decoration: blink !important;
+      }
+
+      @keyframes rainbowText {
+        0% { color: red; }
+        20% { color: orange; }
+        40% { color: yellow; }
+        60% { color: green; }
+        80% { color: blue; }
+        100% { color: violet; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // Creates a marquee banner for the 1998 mode
+  function insert1998Banner() {
+    if (document.getElementById("banner-1998")) return;
+
+    const section = document.createElement("section");
+    section.id = "banner-1998";
+    section.innerHTML = `
+      <marquee behavior="scroll" direction="left" class="text-4xl">
+        Benvenuto nel futuro™... Benvenuto nel 1998!
+      </marquee>
+    `;
+
+    const firstSection = document.querySelector("section");
+    if (firstSection) {
+      firstSection.parentNode.insertBefore(section, firstSection);
+    } else {
+      document.body.prepend(section);
+    }
+  }
+
+  // Konami Code listener setup
+  onMount(() => {
+    function Egg() {
+      this.eggs = [];
+      this.hooks = [];
+      this.kps = [];
+      this.activeEgg = '';
+      this.ignoredKeys = [16];
     }
 
-    // lookup in named key map
-    if(specialKeys.indexOf(key) > -1) {
-      return special[key];
-    }
-    // it's a letter, return the char code for it
-    return (key).charCodeAt(0);
+    Egg.prototype.__execute = function(fn) {
+      return typeof fn === 'function' && fn.call(this);
+    };
+
+    Egg.prototype.__toCharCodes = function(keys) {
+      const special = {
+        "slash": 191, "up": 38, "down": 40, "left": 37, "right": 39,
+        "enter": 13, "space": 32, "ctrl": 17, "alt": 18, "tab": 9, "esc": 27
+      };
+
+      if (typeof keys === 'string') {
+        keys = keys.split(',').map(k => k.trim());
+      }
+
+      return keys.map(key => {
+        if (key === parseInt(key, 10)) return key;
+        if (special[key]) return special[key];
+        return key.charCodeAt(0);
+      }).join(',');
+    };
+
+    Egg.prototype.AddCode = function(keys, fn, metadata) {
+      this.eggs.push({
+        keys: this.__toCharCodes(keys),
+        fn,
+        metadata
+      });
+      return this;
+    };
+
+    Egg.prototype.AddHook = function(fn) {
+      this.hooks.push(fn);
+      return this;
+    };
+
+    Egg.prototype.handleEvent = function(e) {
+      let keyCode = e.which;
+      const isLetter = keyCode >= 65 && keyCode <= 90;
+
+      if (
+        e.type === "keydown" &&
+        !e.metaKey &&
+        !e.ctrlKey &&
+        !e.altKey &&
+        !e.shiftKey
+      ) {
+        const tag = e.target.tagName;
+        if ((tag === "HTML" || tag === "BODY") && isLetter) {
+          e.preventDefault();
+          return;
+        }
+      }
+
+      if (e.type === "keyup" && this.eggs.length > 0) {
+        if (isLetter && !e.shiftKey) keyCode += 32;
+        if (this.ignoredKeys.indexOf(keyCode) === -1) this.kps.push(keyCode);
+
+        this.eggs.forEach((egg) => {
+          if (this.kps.toString().includes(egg.keys)) {
+            this.kps = [];
+            this.activeEgg = egg;
+            this.__execute(egg.fn);
+            this.hooks.forEach(this.__execute, this);
+            this.activeEgg = '';
+          }
+        });
+      }
+    };
+
+    Egg.prototype.Listen = function() {
+      document.addEventListener("keydown", this, false);
+      document.addEventListener("keyup", this, false);
+      return this;
+    };
+
+    // Alias
+    Egg.prototype.listen = Egg.prototype.Listen;
+    Egg.prototype.addCode = Egg.prototype.AddCode;
+    Egg.prototype.addHook = Egg.prototype.AddHook;
+
+    // Initialize and add the Konami Code
+    const egg = new Egg();
+    egg
+      .AddCode("up,up,down,down,left,right,left,right,b,a", activate1998Mode, "konami-code")
+      .AddHook(() => {
+        console.log("Konami Code entered: 1998 mode activated! Enjoy the future™!");
+      })
+      .Listen();
   });
-
-  return characterKeyCodes.join(',');
-}
-
-// Keycode lookup: http://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
-Egg.prototype.AddCode = function(keys, fn, metadata) {
-  this.eggs.push({keys: this.__toCharCodes(keys), fn: fn, metadata: metadata});
-
-  return this;
-}
-
-Egg.prototype.AddHook = function(fn) {
-  this.hooks.push(fn);
-
-  return this;
-}
-
-Egg.prototype.handleEvent = function(e) {
-  var keyCode  = e.which;
-  var isLetter = keyCode >= 65 && keyCode <= 90;
-  /*
-    This prevents find as you type in Firefox.
-    Only prevent default behavior for letters A-Z.
-    I want keys like page up/down to still work.
-  */
-  if ( e.type === "keydown" && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey ) {
-    var tag = e.target.tagName;
-
-    if ( ( tag === "HTML" || tag === "BODY" ) && isLetter ) {
-      e.preventDefault();
-      return;
-    }
-  }
-
-  if ( e.type === "keyup" && this.eggs.length > 0 ) {
-    // keydown defaults all letters to uppercase
-    if(isLetter) {
-      if(!e.shiftKey) {
-        // convert to lower case letter
-        keyCode = keyCode + 32;
-      }
-    }
-
-    // make sure that it's not an ignored key (shift for one)
-    if(this.ignoredKeys.indexOf(keyCode) === -1) {
-      this.kps.push(keyCode);
-    }
-
-    this.eggs.forEach(function(currentEgg, i) {
-      var foundEgg = this.kps.toString().indexOf(currentEgg.keys) >= 0;
-
-      if(foundEgg) {
-        // Reset keys; if more keypresses occur while the callback is executing, it could retrigger the match
-        this.kps = [];
-        // Set the activeEgg to this one
-        this.activeEgg = currentEgg;
-        // if callback is a function, call it
-        this.__execute(currentEgg.fn, this);
-        // Call the hooks
-        this.hooks.forEach(this.__execute, this);
-
-        this.activeEgg = '';
-      }
-    }, this);
-  }
-};
-
-Egg.prototype.Listen = function() {
-  // Standards compliant only. Don't waste time on IE8.
-  if ( document.addEventListener !== void 0 ) {
-    document.addEventListener( "keydown", this, false );
-    document.addEventListener( "keyup", this, false );
-  }
-
-  return this;
-};
-
-Egg.prototype.listen  = Egg.prototype.Listen;
-Egg.prototype.addCode = Egg.prototype.AddCode;
-Egg.prototype.addHook = Egg.prototype.AddHook;
-
-
-var egg = new Egg();
-egg
-  .AddCode("up,up,down,down,left,right,left,right,b,a", function() {
-    alert("Konami!");
-  }, "konami-code")
- .AddHook(function(){
-    console.log("Hook called for: " + this.activeEgg.keys);
-    console.log(this.activeEgg.metadata);
-  }).Listen();
-});
 </script>
