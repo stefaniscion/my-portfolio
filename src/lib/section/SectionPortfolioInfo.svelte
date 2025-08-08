@@ -1,10 +1,10 @@
 <!-- Portfolio info -->
 <script lang="ts">
     import { onMount } from 'svelte';
-    //TODO: fix load_time
     let load_time: number = 0;
     onMount(() => {
-        load_time = performance.getEntriesByType("navigation")[0].domContentLoadedEventEnd - performance.getEntriesByType("navigation")[0].startTime;
+        const navigationEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
+        load_time = navigationEntry.domContentLoadedEventEnd - navigationEntry.startTime;
     });
 </script>
 <section class="bg-neutral-950 text-neutral-100 py-20 font-mona-sans">
