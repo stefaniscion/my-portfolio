@@ -5,7 +5,7 @@
 <section class="bg-neutral-800 text-neutral-100 py-20 font-mona-sans">
     <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3">
         <div class="col-span-1 text-align-center">
-            <img class="mx-auto" src="" alt="Stefano Di Pasquale - Full Stack Developer">
+            <img class="mx-auto rounded-full mb-2" src="img/stefano-di-pasquale-face.png" alt="Stefano Di Pasquale - Full Stack Developer">
             <div class="flex space-x-3 justify-center text-3xl">
                 <a class="text-amber-600 hover:text-neutral-100 transition duration-300" target="_blank" href="https://www.linkedin.com/in/stefano-di-pasquale-70a612110/"><i class="devicon-linkedin-plain"></i></a>
                 <a class="text-amber-600 hover:text-neutral-100 transition duration-300" target="_blank" href="https://github.com/Stefaniscion"><i class="devicon-github-plain"></i></a>
