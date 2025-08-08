@@ -1,9 +1,9 @@
-FROM node:21-alpine3.18 AS build
+FROM node:24.5.0-alpine3.22 AS build
 WORKDIR /app
 COPY package.json ./
 COPY package-lock.json ./
 RUN npm install
 COPY . ./
 RUN npm run build
-FROM nginx:1.25.3-alpine
+FROM nginx:1.29.0-alpine
 COPY --from=build /app/build /usr/share/nginx/html
