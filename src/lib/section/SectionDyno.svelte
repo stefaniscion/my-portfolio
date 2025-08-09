@@ -13,6 +13,7 @@
     let bestScore = 0;
     let obstacleInterval;
     let gameSpeed = 6;
+    let groundPad = 0;
 
     // responsive scaling
     let scale = 1;
@@ -33,23 +34,21 @@
     // apply the scale to the dyno and obstacles
     function applyScale() {
         scale = computeScale();
-       // dipende da scale
+
         dynoSize = Math.round(50 * scale);
+
         dyno.style.width = dynoSize + "px";
         dyno.style.height = dynoSize + "px";
 
-        // fisica e velocità coerenti con la scala
         const baseSpeed = 6;
         const baseGravity = 0.8;
-        const baseJump = -12;
 
         gameSpeed = baseSpeed * scale;
         gravity   = baseGravity * scale;
-        // resetta il salto solo se non stai saltando
+
         if (!jumping) velocity = 0;
 
-        // ostacoli: dimensione ed intervallo
-        spawnIntervalMs = Math.round(1500 / scale); // su mobile spawna meno spesso
+        spawnIntervalMs = Math.round(1500 / scale);
         obstacleFontSizePx = Math.round(32 * scale);
     }
 
@@ -97,11 +96,11 @@
     // make the dyno fall and then start the game
     function fallThenRun() {
         const fallInterval = setInterval(() => {
-            const top = parseInt(dyno.style.top || "0", 10);
+            const top = parseInt(dyno.style.top || "0", groundPad);
             if (top < section.clientHeight - (dynoSize + 10)) {
                 dyno.style.top = top + 4 + "px";
             } else {
-                dyno.style.top = section.clientHeight - (dynoSize + 10) + "px";
+                dyno.style.top = section.clientHeight - (dynoSize + groundPad) + "px";
                 clearInterval(fallInterval);
                 startObstacles();
             }
@@ -110,22 +109,26 @@
 
     // start generating obstacles
     function startObstacles() {
-        clearInterval(obstacleInterval);
-        obstacleInterval = setInterval(() => {
-            const obstacle = document.createElement("div");
-            obstacle.textContent = Math.random() > 0.5 ? "🥒" : "🥦";
-            obstacle.style.position = "absolute";
-            obstacle.style.bottom = "0px";
-            obstacle.style.left = section.clientWidth + "px";
-            obstacle.style.fontSize = obstacleFontSizePx + "px";
-            obstacle.style.userSelect = "none";
-            obstacle.dataset.scored = "false";
-            section.appendChild(obstacle);
-            obstacles.push(obstacle);
-        }, spawnIntervalMs);
+    clearInterval(obstacleInterval);
+    obstacleInterval = setInterval(() => {
+        const obstacle = document.createElement("div");
+        obstacle.textContent = Math.random() > 0.5 ? "🥒" : "🥦";
+        obstacle.style.position = "absolute";
+        
+        const baseOffset = 0; 
+        const scaledOffset = (50 - dynoSize) * 0.5; 
+        obstacle.style.bottom = baseOffset + scaledOffset + "px";
 
-        requestAnimationFrame(updateGame);
-    }
+        obstacle.style.left = section.clientWidth + "px";
+        obstacle.style.fontSize = obstacleFontSizePx + "px";
+        obstacle.style.userSelect = "none";
+        obstacle.dataset.scored = "false";
+        section.appendChild(obstacle);
+        obstacles.push(obstacle);
+    }, spawnIntervalMs);
+
+    requestAnimationFrame(updateGame);
+}
 
     // jump function
     function jump() {
@@ -138,7 +141,7 @@
 
     // update the game state
     function updateGame() {
-        const top = parseInt(dyno.style.top || "0", 10);
+        const top = parseInt(dyno.style.top || "0", groundPad);
         velocity += gravity;
         dyno.style.top =
             Math.min(top + velocity, section.clientHeight - (dynoSize + 10)) + "px";
