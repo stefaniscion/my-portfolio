@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@layer base{
-    @import "font/mona-sans/style.css";
+@import 'tailwindcss';
+@import "@fontsource/mona-sans/400";
+@theme {
+  --font-mona-sans: 'Mona Sans', sans-serif;
 }
