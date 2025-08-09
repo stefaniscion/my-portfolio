@@ -1,5 +1,7 @@
 <!-- Header -->
 <script lang="ts">
+    import ContactButton from "$lib/elements/ContactButton.svelte";
+
     let experience_years: number = new Date().getFullYear() - 2017;
 </script>
 <section class="bg-neutral-800 text-neutral-100 pt-20 font-mona-sans">
@@ -12,7 +14,7 @@
                 Ho una forte <span class="bg-neutral-700 px-1 py-0.5 rounded-lg text-amber-600">passione per l'informatica</span> e la uso nel mio lavoro di sviluppo.<br>
                 Sono qui per creare <span class="bg-neutral-700 px-1 py-0.5 rounded-lg text-amber-600">soluzioni innovative</span> e portare in vita le tue idee digitali!
             </p>
-            <a target="_blank" href="https://calendly.com/stefaniscion/chiamata-introduttiva"><button class="bg-amber-600 text-neutral-100 px-5 py-3 rounded-lg hover:bg-neutral-950 hover:text-neutral-100 transition duration-300 text-xl" type="submit">Contattami ora!</button></a>
+            <ContactButton theme="light" />
         </div>
         <div class="col-span-1">
             <div class="flex justify-center mt-5">

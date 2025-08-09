@@ -10,8 +10,8 @@
 <section class="bg-neutral-950 text-neutral-100 py-20 font-mona-sans">
     <div class="container mx-auto px-4 grid-cols-2">
         <div class="flex mb-5 flex-wrap">
-            <div class="grow"><h2 class="text-5xl mb-5 font-semibold">Questo <span class="text-amber-600">portfolio</span> è scritto con</h2></div>
-            <div class="flex text-neutral-400">
+            <div class="grow"><h2 class="text-5xl mb-5 font-semibold">Questo <span class="text-amber-600">portfolio</span> è scritto con:</h2></div>
+            <div class="flex text-neutral-100">
                 <div><i class="devicon-svelte-plain text-7xl"></i></div>
                 <div><i class="devicon-tailwindcss-plain text-7xl"></i></div>
                 <div><i class="devicon-linux-plain text-7xl"></i></div>
