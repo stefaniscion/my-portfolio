@@ -30,7 +30,8 @@
             <span class="text-amber-600">C#</span>, 
             <span class="text-amber-600">FastAPI</span>, 
             <span class="text-amber-600">Svelte</span>,
-            <span class="text-amber-600">Tailwind</span>, ...)
+            <span class="text-amber-600">Tailwind</span>,
+            <span class="text-amber-600">Wordpress</span>, ...)
         </p>
     </div>
 </section>
