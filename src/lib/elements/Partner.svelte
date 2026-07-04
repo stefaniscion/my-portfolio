@@ -8,4 +8,8 @@
     } = $props();
 </script>
 
-<img class="w-full p-2 basis-1/2 sm:basis-1/4" alt={name} src={url}>
+<div class="basis-1/2 sm:basis-1/4 p-4">
+    <div class="flex h-28 sm:h-32 items-center justify-center">
+        <img class="max-h-full max-w-full object-contain" alt={name} src={url}>
+    </div>
+</div>

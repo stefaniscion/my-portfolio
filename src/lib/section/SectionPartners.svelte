@@ -6,7 +6,7 @@
 <section class="bg-neutral-950 text-neutral-100 py-20 font-mona-sans">
     <div class="container mx-auto px-4">
         <h2 class="text-5xl mb-5 text-center font-semibold"><span class="text-amber-600">Ho collaborato</span> con</h2>
-        <div class="flex flex-wrap justify-between">
+        <div class="flex flex-wrap justify-center">
             <Partner name="Aeronautica Militare" url="img/logo/aeronautica_militare.png"></Partner>
             <Partner name="Anas" url="img/logo/anas.png"></Partner>
             <Partner name="Altran" url="img/logo/altran.png"></Partner>
