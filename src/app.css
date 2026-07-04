@@ -1,5 +1,6 @@
-@import 'tailwindcss';
 @import url('https://fonts.googleapis.com/css2?family=Mona+Sans:ital@0;1&display=swap');
+@import 'tailwindcss';
+
 @theme {
   --font-mona-sans: 'Mona Sans', sans-serif;
 }

@@ -1,8 +1,15 @@
 <script lang="ts">
-    export let name: string;
-    export let level: Number;
-    export let icon: string;
-    export let basis: string;
+    let {
+        name,
+        level,
+        icon,
+        basis
+    }: {
+        name: string;
+        level: number;
+        icon: string;
+        basis: string;
+    } = $props();
 </script>
 
 <div class="flex grow w-full {basis} p-2">

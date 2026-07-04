@@ -1,6 +1,8 @@
 <script lang="ts">
     import "../app.css";
     import "devicon/devicon.min.css";
+
+    let { children } = $props();
     let title: string = "Stefano Di Pasquale | Software Engineer & Developer";
 </script>
 
@@ -8,4 +10,4 @@
 	<title>{title}</title>
 </svelte:head>
 
-<slot/>
+{@render children()}
