@@ -1,11 +1,28 @@
 <!-- Portfolio info -->
 <script lang="ts">
     import { onMount } from 'svelte';
-    let load_time = $state(0);
+
+    let load_time = $state<number | null>(null);
+
+    function updateLoadTime() {
+        const [navigationEntry] = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
+        const loadEnd = navigationEntry?.loadEventEnd || performance.now();
+        const startTime = navigationEntry?.startTime || 0;
+
+        load_time = Math.max(1, Math.round(loadEnd - startTime));
+    }
 
     onMount(() => {
-        const navigationEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
-        load_time = navigationEntry.domContentLoadedEventEnd - navigationEntry.startTime;
+        if (document.readyState === "complete") {
+            updateLoadTime();
+            return;
+        }
+
+        window.addEventListener("load", updateLoadTime, { once: true });
+
+        return () => {
+            window.removeEventListener("load", updateLoadTime);
+        };
     });
 </script>
 <section class="bg-neutral-950 text-neutral-100 py-20 font-mona-sans">
@@ -19,7 +36,7 @@
             </div>
         </div>
         <p>
-            <span class="text-amber-600 font-semibold">Swoosh!</span> 🚀 Questo portfolio ha impiegato <span class="text-amber-600 font-semibold">{load_time} ms</span> per caricarsi totalmente! 
+            <span class="text-amber-600 font-semibold">Swoosh!</span> 🚀 Questo portfolio ha impiegato <span class="text-amber-600 font-semibold">{load_time === null ? "..." : `${load_time} ms`}</span> per caricarsi totalmente! 
             La media mondiale di caricamento è di <span class="text-amber-600 font-semibold">2.5 s su desktop e di 8.6 s su mobile</span>. 
             <a class="text-amber-600 underline hover:text-neutral-100 transition duration-300" target="_blank" href="https://www.tooltester.com/en/blog/website-loading-time-statistics/"><sup>[1]</sup></a> 
             La performance di un sito è cruciale per il conversion rate dello stesso! 
