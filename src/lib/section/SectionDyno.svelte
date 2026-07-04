@@ -7,20 +7,20 @@
     let gravity = 0.8;
     let velocity = 0;
     let jumping = false;
-    let gameStarted = false;
-    let gameOver = false;
-    let score = 0;
-    let bestScore = 0;
+    let gameStarted = $state(false);
+    let gameOver = $state(false);
+    let score = $state(0);
+    let bestScore = $state(0);
     let obstacleInterval;
     let gameSpeed = 6;
     let groundPad = 0;
 
     // responsive scaling
-    let scale = 1;
+    let scale = $state(1);
     const BASE_WIDTH = 768;
     const MIN_SCALE = 0.6; 
     const MAX_SCALE = 1.0;
-    let dynoSize = 50;
+    let dynoSize = $state(50);
     let spawnIntervalMs = 1500;
 
     // scale the dyno and obstacles based on the section width
@@ -238,7 +238,7 @@
     {#if !gameStarted && !gameOver}
         <button
             class="absolute inset-0 flex items-center justify-center"
-            on:click={startGame}
+            onclick={startGame}
             aria-label="Start game"
         >
             <span
@@ -265,9 +265,10 @@
     {/if}
 
     {#if gameOver}
-        <div
+        <button
+            type="button"
             class="absolute inset-0 flex flex-col items-center justify-center bg-black/50 cursor-pointer text-center px-4"
-            on:click={restartGame}
+            onclick={restartGame}
         >
             <div class="text-amber-600 font-bold text-xl">GAME OVER</div>
             <div class="text-white/90 font-mono mt-1">
@@ -276,6 +277,6 @@
             <div class="text-white/70 text-sm mt-2">
                 Clicca qui per ripartire
             </div>
-        </div>
+        </button>
     {/if}
 </section>

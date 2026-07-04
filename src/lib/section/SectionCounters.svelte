@@ -9,10 +9,10 @@
 <section class="bg-neutral-950 text-neutral-100 py-20 font-mona-sans">
     <div class="container mx-auto px-4">
         <div class="flex flex-wrap justify-between text-center">
-            <Counter value="{experience_years}+" text="Anni di esperienza 📆" />
+            <Counter value={`${experience_years}+`} text="Anni di esperienza 📆" />
             <Counter value="100+" text="Consulenze effettuate 📈" />
-            <Counter value="{production_hours}K" text="Ore di sviluppo svolte per i miei partner 🕞" />
-            <Counter value="{production_coffes}" text="Caffè consumati in produzione ☕" />
+            <Counter value={`${production_hours}K`} text="Ore di sviluppo svolte per i miei partner 🕞" />
+            <Counter value={production_coffes} text="Caffè consumati in produzione ☕" />
         </div>
     </div>
 </section>

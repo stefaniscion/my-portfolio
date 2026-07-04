@@ -1,7 +1,8 @@
 <!-- Portfolio info -->
 <script lang="ts">
     import { onMount } from 'svelte';
-    let load_time: number = 0;
+    let load_time = $state(0);
+
     onMount(() => {
         const navigationEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
         load_time = navigationEntry.domContentLoadedEventEnd - navigationEntry.startTime;

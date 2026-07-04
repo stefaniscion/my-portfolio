@@ -23,9 +23,7 @@
                     <img src="https://github-readme-stats.vercel.app/api?username=stefaniscion&title_color=e17100&icon_color=e17100&text_color=ffffff&hide_border=true&locale=it&show_icons=true&theme=transparent" alt="Stefano Di Pasquale GitHub Stats"/>
                 </a>
             </div>
-
-        
-
+        </div>
         
     </div>
 </section>
