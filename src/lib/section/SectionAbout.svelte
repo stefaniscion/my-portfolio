@@ -21,7 +21,7 @@
 
             </div>
         </div>
-        <div class="col-span-2">
+        <div class="col-span-2 px-5">
             <h2 class="text-5xl mb-5 font-semibold">
                 <span class="text-amber-600">Chi</span> sono
             </h2>
