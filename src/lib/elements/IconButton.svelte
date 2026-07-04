@@ -1,8 +1,14 @@
 
 <script lang="ts">
-    export let name: string;
-    export let icon: string;
-    export let link: string;
+    let {
+        name,
+        icon,
+        link
+    }: {
+        name: string;
+        icon: string;
+        link: string;
+    } = $props();
 </script>
 
 <a
