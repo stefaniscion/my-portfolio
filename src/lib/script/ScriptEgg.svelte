@@ -1,7 +1,16 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
 
   let activatedOnce = false;
+
+  type EggCallback = () => void;
+  type KeyInput = string | Array<string | number>;
+
+  type EggCode = {
+    keys: string;
+    fn: EggCallback;
+    metadata?: string;
+  };
 
   // Activate the 1998 mode
   function activate1998Mode() {
@@ -72,29 +81,26 @@
     `;
 
     const firstSection = document.querySelector("section");
-    if (firstSection) {
+    if (firstSection?.parentNode) {
       firstSection.parentNode.insertBefore(section, firstSection);
     } else {
       document.body.prepend(section);
     }
   }
 
-  // Konami Code listener setup
-  onMount(() => {
-    function Egg() {
-      this.eggs = [];
-      this.hooks = [];
-      this.kps = [];
-      this.activeEgg = '';
-      this.ignoredKeys = [16];
+  class Egg implements EventListenerObject {
+    eggs: EggCode[] = [];
+    hooks: EggCallback[] = [];
+    kps: number[] = [];
+    activeEgg: EggCode | null = null;
+    ignoredKeys = [16];
+
+    __execute(fn: EggCallback) {
+      return typeof fn === 'function' && fn.call(this);
     }
 
-    Egg.prototype.__execute = function(fn) {
-      return typeof fn === 'function' && fn.call(this);
-    };
-
-    Egg.prototype.__toCharCodes = function(keys) {
-      const special = {
+    __toCharCodes(keys: KeyInput) {
+      const special: Record<string, number> = {
         "slash": 191, "up": 38, "down": 40, "left": 37, "right": 39,
         "enter": 13, "space": 32, "ctrl": 17, "alt": 18, "tab": 9, "esc": 27
       };
@@ -104,27 +110,28 @@
       }
 
       return keys.map(key => {
-        if (key === parseInt(key, 10)) return key;
+        if (typeof key === "number") return key;
+        if (key === String(parseInt(key, 10))) return parseInt(key, 10);
         if (special[key]) return special[key];
         return key.charCodeAt(0);
       }).join(',');
-    };
+    }
 
-    Egg.prototype.AddCode = function(keys, fn, metadata) {
+    AddCode(keys: KeyInput, fn: EggCallback, metadata?: string) {
       this.eggs.push({
         keys: this.__toCharCodes(keys),
         fn,
         metadata
       });
       return this;
-    };
+    }
 
-    Egg.prototype.AddHook = function(fn) {
+    AddHook(fn: EggCallback) {
       this.hooks.push(fn);
       return this;
-    };
+    }
 
-    Egg.prototype.handleEvent = function(e) {
+    handleEvent(e: KeyboardEvent) {
       let keyCode = e.which;
       const isLetter = keyCode >= 65 && keyCode <= 90;
 
@@ -135,7 +142,7 @@
         !e.altKey &&
         !e.shiftKey
       ) {
-        const tag = e.target.tagName;
+        const tag = e.target instanceof HTMLElement ? e.target.tagName : "";
         if ((tag === "HTML" || tag === "BODY") && isLetter) {
           e.preventDefault();
           return;
@@ -152,23 +159,33 @@
             this.activeEgg = egg;
             this.__execute(egg.fn);
             this.hooks.forEach(this.__execute, this);
-            this.activeEgg = '';
+            this.activeEgg = null;
           }
         });
       }
-    };
+    }
 
-    Egg.prototype.Listen = function() {
+    Listen() {
       document.addEventListener("keydown", this, false);
       document.addEventListener("keyup", this, false);
       return this;
-    };
+    }
 
-    // Alias
-    Egg.prototype.listen = Egg.prototype.Listen;
-    Egg.prototype.addCode = Egg.prototype.AddCode;
-    Egg.prototype.addHook = Egg.prototype.AddHook;
+    listen() {
+      return this.Listen();
+    }
 
+    addCode(keys: KeyInput, fn: EggCallback, metadata?: string) {
+      return this.AddCode(keys, fn, metadata);
+    }
+
+    addHook(fn: EggCallback) {
+      return this.AddHook(fn);
+    }
+  }
+
+  // Konami Code listener setup
+  onMount(() => {
     // Initialize and add the Konami Code
     const egg = new Egg();
     egg

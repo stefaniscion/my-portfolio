@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
     import { onMount } from "svelte";
 
-    let section;
-    let dyno;
-    let obstacles = [];
+    let section: HTMLElement | undefined;
+    let dyno: HTMLImageElement | undefined;
+    let obstacles: HTMLDivElement[] = [];
     let gravity = 0.8;
     let velocity = 0;
     let jumping = false;
@@ -11,7 +11,7 @@
     let gameOver = $state(false);
     let score = $state(0);
     let bestScore = $state(0);
-    let obstacleInterval;
+    let obstacleInterval: ReturnType<typeof setInterval> | undefined;
     let gameSpeed = 6;
     let groundPad = 0;
 
@@ -33,6 +33,8 @@
 
     // apply the scale to the dyno and obstacles
     function applyScale() {
+        if (!dyno) return;
+
         scale = computeScale();
 
         dynoSize = Math.round(50 * scale);
@@ -63,7 +65,7 @@
 
     // start the game when the dyno is clicked
     function startGame() {
-        if (gameStarted) return;
+        if (gameStarted || !dyno) return;
         gameStarted = true;
         gameOver = false;
         score = 0;
@@ -90,12 +92,17 @@
         velocity = 0;
 
         centerDyno();
+        if (!dyno) return;
         dyno.style.pointerEvents = "none";
     }
 
     // make the dyno fall and then start the game
     function fallThenRun() {
+        if (!section || !dyno) return;
+
         const fallInterval = setInterval(() => {
+            if (!section || !dyno) return;
+
             const top = parseInt(dyno.style.top || "0", groundPad);
             if (top < section.clientHeight - (dynoSize + 10)) {
                 dyno.style.top = top + 4 + "px";
@@ -109,26 +116,30 @@
 
     // start generating obstacles
     function startObstacles() {
-    clearInterval(obstacleInterval);
-    obstacleInterval = setInterval(() => {
-        const obstacle = document.createElement("div");
-        obstacle.textContent = Math.random() > 0.5 ? "🥒" : "🥦";
-        obstacle.style.position = "absolute";
-        
-        const baseOffset = 0; 
-        const scaledOffset = (50 - dynoSize) * 0.5; 
-        obstacle.style.bottom = baseOffset + scaledOffset + "px";
+        if (!section) return;
 
-        obstacle.style.left = section.clientWidth + "px";
-        obstacle.style.fontSize = obstacleFontSizePx + "px";
-        obstacle.style.userSelect = "none";
-        obstacle.dataset.scored = "false";
-        section.appendChild(obstacle);
-        obstacles.push(obstacle);
-    }, spawnIntervalMs);
+        clearInterval(obstacleInterval);
+        obstacleInterval = setInterval(() => {
+            if (!section) return;
 
-    requestAnimationFrame(updateGame);
-}
+            const obstacle = document.createElement("div");
+            obstacle.textContent = Math.random() > 0.5 ? "🥒" : "🥦";
+            obstacle.style.position = "absolute";
+            
+            const baseOffset = 0; 
+            const scaledOffset = (50 - dynoSize) * 0.5; 
+            obstacle.style.bottom = baseOffset + scaledOffset + "px";
+
+            obstacle.style.left = section.clientWidth + "px";
+            obstacle.style.fontSize = obstacleFontSizePx + "px";
+            obstacle.style.userSelect = "none";
+            obstacle.dataset.scored = "false";
+            section.appendChild(obstacle);
+            obstacles.push(obstacle);
+        }, spawnIntervalMs);
+
+        requestAnimationFrame(updateGame);
+    }
 
     // jump function
     function jump() {
@@ -141,6 +152,8 @@
 
     // update the game state
     function updateGame() {
+        if (!section || !dyno) return;
+
         const top = parseInt(dyno.style.top || "0", groundPad);
         velocity += gravity;
         dyno.style.top =
@@ -163,7 +176,7 @@
                 score++;
                 if (score > bestScore) {
                     bestScore = score;
-                    localStorage.setItem('dyno-best-score', bestScore);
+                    localStorage.setItem('dyno-best-score', String(bestScore));
                 }
                 if (score % 2 === 0) gameSpeed += 1 * scale;
             }
@@ -196,6 +209,8 @@
     }
 
     onMount(() => {
+        if (!section || !dyno) return;
+
         //load best score from localStorage
         const savedBest = localStorage.getItem('dyno-best-score');
         if (savedBest) {
